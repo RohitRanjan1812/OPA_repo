@@ -18,3 +18,4 @@ for t in tickers[:100]:
     cols = cols.union(set(yf.Ticker(t).info.keys()))
 
 print('xyz')
+print('hello waldo')
