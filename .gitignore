@@ -1,3 +1,5 @@
 .opa_venv/*
 __pycache__/*
 *.ods
+Data/*
+archive/*
