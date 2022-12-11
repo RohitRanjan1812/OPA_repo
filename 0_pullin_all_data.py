@@ -44,3 +44,10 @@ df_allInfo = pd.concat([df_allInfo, pd.DataFrame.from_dict([yf.Ticker('TRAUF').i
 #%% finally we can save our complete extract as pkl
 df_allInfo.to_pickle(r'C:\Users\49176\Desktop\DSA\OPA_repo\df_allInfo.pkl')
 
+#%%download all 503 stock ticker data via api call
+df = pd.read_pickle(r'C:\Users\49176\Desktop\DSA\OPA_repo\df_allInfo_clean.pkl')
+ticker_str = " ".join(list(df.index))
+data = yf.download(ticker_str, start="1900-01-01",  #max 50 yrs data is only available so 1962-01-02
+                    end="2022-12-10", group_by='tickers')
+data.to_pickle('50yr_timeSeries_data.pkl')
+
