@@ -6,3 +6,5 @@ archive/*
 *.pkl
 *.png
 *.zip
+Self/*
+Reports/*
