@@ -3,3 +3,8 @@ __pycache__/*
 *.ods
 Data/*
 archive/*
+*.pkl
+*.png
+*.zip
+Self/*
+Reports/*
