@@ -3,6 +3,3 @@ __pycache__/*
 *.ods
 Data/*
 archive/*
-ClusterAnalysis/KMeans/Data/*
-.vscode/*
-tempCodeRunnerFile.python
