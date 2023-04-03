@@ -1,4 +1,5 @@
 import streamlit as st
+import eda_viz_module as eda
 # Set page configurations
 st.set_page_config(
     page_title="Portfolio Allocator Tool",
@@ -14,6 +15,7 @@ def main():
     tab_visualization, tab_stockSelection, tab_returnAnalysis = st.tabs(["EDA: Visualizations", "Stock Selection", "Optimization and Return Analysis"])
     with tab_visualization:
         st.subheader("The selected tab is for EDA: Visualizations")
+        eda.test_graph(eda.df)
     with tab_stockSelection:
         st.title("The selected tab is for Stock Selection")
     with tab_returnAnalysis:
