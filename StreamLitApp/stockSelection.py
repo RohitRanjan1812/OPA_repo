@@ -1,0 +1,2 @@
+def _none():
+        pass
