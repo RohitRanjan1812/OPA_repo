@@ -1,8 +1,7 @@
 .opa_venv/*
 __pycache__/*
 *.ods
-Data/*
 archive/*
-ClusterAnalysis/KMeans/Data/*
 .vscode/*
 tempCodeRunnerFile.python
+data/*
