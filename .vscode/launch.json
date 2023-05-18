@@ -1,0 +1,31 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Streamlit",
+            "type": "python",
+            "request": "launch",
+            "module": "streamlit",
+            "args": ["run", "D:/Py_Prjs/OPA_repo/StreamLitApp/app.py"],
+            "env": {
+                "PYTHONPATH": "D:/Py_Prjs/envs/.ml/Scripts"
+            }
+        },
+        {
+            "name": "Streamlit_TEST",
+            "type": "python",
+            "request": "launch",
+            "module": "streamlit",
+            "args": ["run", "D:/Py_Prjs/OPA_repo/StreamLitApp/test.py"],
+            "env": {
+                "PYTHONPATH": "D:/Py_Prjs/envs/.ml/Scripts"
+            }
+        }
+    ],
+
+
+
+    
+}
+
+
