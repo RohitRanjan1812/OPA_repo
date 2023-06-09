@@ -587,18 +587,18 @@ for alt in dict_ts_alt_port.keys():
     if alt == 'market_port':
         continue
     df_market_port = dict_ts_alt_port[alt].sum(axis=1)
-    # ts_analysis(df_market_port, _resampling = '1W', _debug = False, _plot = True, _export = True, _export_filename=f'ts_model_{alt}_1W.sav')
-    # ts_analysis(df_market_port, _resampling = '1M', _debug = False, _plot = True, _export = True, _export_filename=f'ts_model_{alt}_1M.sav')
+    ts_analysis(df_market_port, _resampling = '1W', _debug = False, _plot = True, _export = True, _export_filename=f'ts_model_{alt}_1W.sav')
+    ts_analysis(df_market_port, _resampling = '1M', _debug = False, _plot = True, _export = True, _export_filename=f'ts_model_{alt}_1M.sav')
 
-    # lin_analysis(df_market_port, _resampling = '1W', _debug = False, _method = 0, _plot = True, _export = True, _export_filename=f'lin_model_{alt}_1W_m0.sav')
-    # lin_analysis(df_market_port, _resampling = '1W', _debug = False, _method = 1, _plot = True, _export = True, _export_filename=f'lin_model_{alt}_1W_m1.sav')
-    # lin_analysis(df_market_port, _resampling = '1W', _debug = False, _method = 2, _plot = True, _export = True, _export_filename=f'lin_model_{alt}_1W_m2.sav')
-    # lin_analysis(df_market_port, _resampling = '1W', _debug = False, _method = 3, _plot = True, _export = True, _export_filename=f'lin_model_{alt}_1W_m3.sav')
+    lin_analysis(df_market_port, _resampling = '1W', _debug = False, _method = 0, _plot = True, _export = True, _export_filename=f'lin_model_{alt}_1W_m0.sav')
+    lin_analysis(df_market_port, _resampling = '1W', _debug = False, _method = 1, _plot = True, _export = True, _export_filename=f'lin_model_{alt}_1W_m1.sav')
+    lin_analysis(df_market_port, _resampling = '1W', _debug = False, _method = 2, _plot = True, _export = True, _export_filename=f'lin_model_{alt}_1W_m2.sav')
+    lin_analysis(df_market_port, _resampling = '1W', _debug = False, _method = 3, _plot = True, _export = True, _export_filename=f'lin_model_{alt}_1W_m3.sav')
 
-    # lin_analysis(df_market_port, _resampling = '1M', _debug = False, _method = 0, _plot = True, _export = True, _export_filename=f'lin_model_{alt}_1M_m0.sav')
-    # lin_analysis(df_market_port, _resampling = '1M', _debug = False, _method = 1, _plot = True, _export = True, _export_filename=f'lin_model_{alt}_1M_m1.sav')
-    # lin_analysis(df_market_port, _resampling = '1M', _debug = False, _method = 2, _plot = True, _export = True, _export_filename=f'lin_model_{alt}_1M_m2.sav')
-    # lin_analysis(df_market_port, _resampling = '1M', _debug = False, _method = 3, _plot = True, _export = True, _export_filename=f'lin_model_{alt}_1M_m3.sav')
+    lin_analysis(df_market_port, _resampling = '1M', _debug = False, _method = 0, _plot = True, _export = True, _export_filename=f'lin_model_{alt}_1M_m0.sav')
+    lin_analysis(df_market_port, _resampling = '1M', _debug = False, _method = 1, _plot = True, _export = True, _export_filename=f'lin_model_{alt}_1M_m1.sav')
+    lin_analysis(df_market_port, _resampling = '1M', _debug = False, _method = 2, _plot = True, _export = True, _export_filename=f'lin_model_{alt}_1M_m2.sav')
+    lin_analysis(df_market_port, _resampling = '1M', _debug = False, _method = 3, _plot = True, _export = True, _export_filename=f'lin_model_{alt}_1M_m3.sav')
     prophet_analysis(df_market_port, _resampling = '1M', _debug = False, _method = 0, _plot = True, _export = True, _export_filename=f'pt_model_{alt}_1M.sav')
     prophet_analysis(df_market_port, _resampling = '1W', _debug = False, _method = 0, _plot = True, _export = True, _export_filename=f'pt_model_{alt}_1W.sav')
 
