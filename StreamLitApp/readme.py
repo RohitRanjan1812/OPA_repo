@@ -1,13 +1,13 @@
 # Import required libraries
 import streamlit as st
 
-def main():
+def docu():
 
     # Define title and subtitle
     st.markdown("Welcome to the <span style='font-weight: bold; color:#4BDCFF'>Portfolio Allocator tool</span>. \
                 Please go through this 'readme' to effectively use this tool", unsafe_allow_html=True)
 
-    with st.expander("Introduction", expanded=True):
+    with st.expander("Introduction"):
         st.markdown('''
         The purpose of the application is to aid an Invester to select a subset of S&P 500, which minimizes risk by selecting diverse (mutually independent) stocks
         and further optimizes risk/profitability by adopting a smart weight allocation amongst the selected stocks. Further a time series prediction is performed
@@ -33,6 +33,11 @@ def main():
         
         To further aid the invester in the decision making, the time series data is used for predicting future return for each portfolio alternatives
         ''', unsafe_allow_html=True)
+    
+    with st.expander('Methodology'):
+        st.write("""
+                Presents the user with a detailed technical deep-dive into the methodology of the current work.
+                """)
 
     with st.expander("EDA: Visualization"):
         st.write('''
@@ -42,17 +47,20 @@ def main():
         The time series tab helps vizualize the evolution of stock metric over time.
         ''')
 
-    with st.expander("Stock Selection"):
+    with st.expander("Stock Selection & Return Analysis"):
         st.write("""
-        In this tab we present the user with a choice of 14 different portfolio choices with the stock composition and some fundamental information
-        to base the selection choice
-        """)
+        In this tab we present the user with a choice of 14 different portfolios with the stock composition and some fundamental information
+        to base the selection.
 
-    with st.expander("Optimization and return analysis"):
-        st.write("""
+
         Given the portfolio selection we display a pie chart with the estimated optimal weight distribution which has been derived by a
         Multi-Layer Perceptrone optimization technique applied to the historic time series data.
         Moreover a basic model information is displayed with the predicted and test time interval. 
-        The user can choose the model and enter a time duration for prediction from the last available dataset. The final outcome is a % return
+        The user can choose the model and enter a time duration for prediction from the last available dataset.
+        The final outcome is a % return
         """)
 
+    with st.expander('Conclusion & future scope'):
+        st.write("""
+                This tab summarizes the current work and presents potential future improvements and features.
+                """)

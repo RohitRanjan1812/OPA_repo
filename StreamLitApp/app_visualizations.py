@@ -2,9 +2,13 @@ import altair as alt
 import pandas as pd
 import numpy as np
 import streamlit as st
+import plotly.express as px
+import plotly.graph_objects as go
+
+alt.data_transformers.disable_max_rows()
 
 @st.cache_resource
-def chart_quant(df, data_type):
+def chart_quant(df, data_type, feature1, feature2):
     source = df
 
     brush = alt.selection(type='multi', encodings=['x']) # type: ignore
@@ -31,12 +35,81 @@ def chart_quant(df, data_type):
         features = df.select_dtypes(include=[np.number]).columns.tolist()
     elif data_type == 'nominal':
         features = df.select_dtypes(include='object').columns.tolist()
+
+    df = df.reset_index()
+    features.insert(0, 'symbol')
+    # # create a new DataFrame that stacks all columns of the original DataFrame
+    # stacked_df = df[features].stack().reset_index()
+    # stacked_df.columns = ['index', 'key', 'value']
+    
+    # # create text chart
+    # text_chart = alt.Chart(stacked_df)\
+    #         .mark_text()\
+    #         .encode(
+    #             alt.X(
+    #                 "key",
+    #                 type="nominal",
+    #                 axis=alt.Axis(
+    #                     orient="top",
+    #                     labelAngle=0,
+    #                     title=None,
+    #                     ticks=False,
+    #                     labelColor='#FFFFFF'
+    #                 ),
+    #                 scale=alt.Scale(align=0.5, padding=10),
+    #                 sort=None,
+    #             ),
+    #             alt.Y("index", type="ordinal", axis=None),
+    #             alt.Text("value", type="nominal"),
+    #             color=alt.condition(brush, alt.value('#90EE90'), alt.value('#ddd'), legend=None) # Color text based on selection
+    #         )\
+    #         .properties(height=5000)
+    # Define the scatter plot
+    if data_type == 'quantitative':
+        scatter = alt.Chart(df[features]).mark_circle().encode(
+            x=feature1,
+            y=feature2,
+            color=alt.condition(brush, alt.value('#90EE90'), alt.value('#ddd')), # Color points based on selection
+            tooltip='symbol'
+
+        ).transform_filter(
+            brush
+        ).interactive()
+    else:
+        scatter = alt.Chart(df[features]).mark_circle().encode(
+            x=feature1,
+            y=feature2,
+            color=alt.condition(brush, alt.value('#90EE90'), alt.value('#ddd')), # Color points based on selection
+            size=alt.Size('count(symbol)', scale=alt.Scale(range=[5, 100])),
+            tooltip= 'count()' #alt.Tooltip(field='symbol:N', title='Symbols', type='nominal', aggregate='values')  #'values(symbol)'
+
+        ).transform_filter(
+            brush
+        ).interactive()
+    # scatter_tooltip = alt.Chart(source.reset_index().groupby([feature1, feature2])['symbol'].apply(list).reset_index()).mark_circle().encode(
+    #     x=feature1,
+    #     y=feature2,
+    #     color=alt.condition(brush, alt.value('#90EE90'), alt.value('#ddd')), # Color points based on selection
+    #     size=alt.Size('count(symbol)', scale=alt.Scale(range=[5, 100])),
+    #     tooltip=alt.Tooltip('symbol', delay=0)
+    # ).transform_filter(
+    #     brush
+    # )
+        
     # layer the two charts & repeat
-    st.vega_lite_chart(alt.layer(
+    chart1 = alt.layer(
         background,
         highlight,
         data=source
-    ).repeat(repeat=features, columns=4).to_dict()) # type: ignore
+    ).repeat(repeat=features[1:], columns=4) # type: ignore
+    chart2 = scatter
+    concat_chart = alt.hconcat(chart1, chart2, spacing=50).properties(
+        autosize=alt.AutoSizeParams(
+            type='fit',
+            contains='padding')
+    )   #.configure_axisX(orient='top') #.configure_view(height=5000, width=2000)
+    st.vega_lite_chart(concat_chart.to_dict(),
+    use_container_width=True) # type: ignore
     return brush
 
 @st.cache_resource
@@ -53,7 +126,7 @@ def time_series_charts(ts_df):
     # Create the line chart for the time series data with brush selection
     line_chart_with_brush = (
         alt.Chart(ts_df)
-        .mark_line()
+        .mark_line(color='#90EE90') # type: ignore
         .encode(*encoding)
         .properties(width=chart_width, height=chart_height)
         .add_selection(brush)
@@ -62,7 +135,7 @@ def time_series_charts(ts_df):
     # Create a chart for the selected region
     selected_region_chart = (
         alt.Chart(ts_df)
-        .mark_line()
+        .mark_line(color='#90EE90') # type: ignore
         .transform_filter(brush)
         .encode(
             x=alt.X(
@@ -80,6 +153,3 @@ def time_series_charts(ts_df):
     # Display the interactive time series chart
     interactive_chart = line_chart_with_brush & selected_region_chart
     st.altair_chart(interactive_chart)
-
-
-
