@@ -129,7 +129,7 @@ def ts_analysis(_df, _resampling='1W', _debug=False, _method = 0, _plot = True,
 
         tsa =seasonal_decompose(df_train_resampled)
         fig=tsa.plot()
-        fig.set_size_inches((16, 8))
+        fig.set_size_inches((16, 8)) # type: ignore
         fig.tight_layout()
         plt.show();
     
@@ -162,14 +162,14 @@ def ts_analysis(_df, _resampling='1W', _debug=False, _method = 0, _plot = True,
     # SARIMA fit default: (1,1,1)
     model_sm = sm.tsa.SARIMAX(df_train_resampled_log, order=(1,1,1), seasonal_order = (1,1,1 ,steps))  ## 1M: seasonal_order = (0,1,1,12)
     model_sm_fitted = model_sm.fit()
-    print(model_sm_fitted.summary())
+    print(model_sm_fitted.summary()) # type: ignore
     
     # export model
     if _export == True:
         pickle.dump(model_sm_fitted, open(root_dir + '\\' + _export_filename, 'wb'))
 
     # Forecasting with a confidence interval    
-    prediction_log = model_sm_fitted.get_forecast(steps = steps).summary_frame()  
+    prediction_log = model_sm_fitted.get_forecast(steps = steps).summary_frame()  # type: ignore 
     prediction = np.exp(prediction_log)
 
     if _plot == True:
@@ -246,8 +246,8 @@ def lin_analysis(_df, _resampling='1W', _debug=False, _method = 0, _plot = True,
     df_lin.columns = ['Stock','Time']
     
     # create month/year as variable
-    df_lin['Month'] = df_lin.index.month
-    df_lin['Year'] = df_lin.index.year
+    df_lin['Month'] = df_lin.index.month # type: ignore
+    df_lin['Year'] = df_lin.index.year # type: ignore
     
     # create lags as variable
     for i in range(12,18,1):
@@ -376,7 +376,7 @@ def lin_analysis(_df, _resampling='1W', _debug=False, _method = 0, _plot = True,
         plt.plot(df_train_lin.index, df_train_lin.Stock, c='b', label='train')
         plt.plot(X_test.index, y_test, c='orange', label='test')
         plt.plot(X_test.index, y_pred_plot, c = 'r', label='prediction')
-        plt.axvline(x= df_test_lin.index[0], color='orange'); 
+        plt.axvline(x= df_test_lin.index[0], color='orange');  # type: ignore
         plt.legend()
 
         plt.xlabel('Time')
@@ -405,8 +405,8 @@ df_lin['Time'] = np.arange(len(df_lin.index))
 df_lin.columns = ['Stock','Time']
 
 # create month/year as variable
-df_lin['Month'] = df_lin.index.month
-df_lin['Year'] = df_lin.index.year
+df_lin['Month'] = df_lin.index.month # type: ignore
+df_lin['Year'] = df_lin.index.year # type: ignore
 
 # create lags as variable
 for i in range(12,18,1):
@@ -504,7 +504,7 @@ def prophet_analysis(_df, _resampling='1W', _debug=False, _method = 0, _plot = T
         pickle.dump(model_pt, open(root_dir + '\\' + _export_filename, 'wb'))
     
     # prediction df_market_port
-    future_dates = model_pt.make_future_dataframe(periods = steps, freq = freq) # TODO MS ws montlhy?
+    future_dates = model_pt.make_future_dataframe(periods = steps, freq = freq) # TODO MS ws montlhy? # type: ignore
     
     # prediction
     forecast = model_pt.predict(future_dates)
@@ -522,7 +522,7 @@ def prophet_analysis(_df, _resampling='1W', _debug=False, _method = 0, _plot = T
 
         #ax = y_save.plot()
         plt.plot(df_test_pt.index, df_test_pt['y'], c='orange', label='test')
-        plt.axvline(x= df_test_pt.index[0], color='orange')
+        plt.axvline(x= df_test_pt.index[0], color='orange') # type: ignore
         plt.savefig(root_dir + '\\' + _export_filename[:-4] + '.jpg', dpi=100)
 
     # RSME calculation

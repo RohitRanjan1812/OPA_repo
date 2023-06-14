@@ -35,7 +35,7 @@ def main():
     with col1:
         port_val = st.selectbox('Select an alternative portfolio option', options, index=options.index(port_val))
         state.port_val = port_val
-        alt_num = int(port_val.split(' ')[-1]) - 1
+        alt_num = int(port_val.split(' ')[-1]) - 1  # type: ignore
         st.write('Here are the weight distribution for:', port_val)
         st.table(df_wt[f"alt_port_{alt_num}"].to_dict())
     with col2:
@@ -45,17 +45,22 @@ def main():
             state.mod_val = mod_val
             resamp_val = st.selectbox('Select the sampling freq:', resampling_options, index=resampling_options.index(resamp_val))
             state.resamp_val = resamp_val
-            st.write('selected model option', mod_val)
-            st.write('selected resampling option', resamp_val)
+            # st.write('selected model option', mod_val)
+            # st.write('selected resampling option', resamp_val)
+            st.write('\n')
+            st.write('''\nThe time series evolution (with model prediction and error band) of the alternate portfolio considering a 1000 USD investment at the start of 2019.
+                    \nThe predicted results are for the end of the 2019:''')
             if mod_val == 'SARIMA':
                 if resamp_val == '1 Month':
                     file_name = f'ts_model_alt_port_{alt_num}_1M.jpg'
+                    risk_return_file_name = f'risk_return_alt_port_{alt_num + 1}_ts_1M.jpg'
                     model = pickle.load(open(base_path + file_name[:-4] + '.sav', 'rb'))
                     return_pct_ub = 100*(np.exp(model.get_forecast(steps = 12).summary_frame()).iloc[-1, 3] -1000) /1000
                     return_pct = 100*(np.exp(model.get_forecast(steps = 12).summary_frame()).iloc[-1, 0] -1000) /1000
                     return_pct_lb = 100*(np.exp(model.get_forecast(steps = 12).summary_frame()).iloc[-1, 2] -1000) /1000
                 else:
                     file_name = f'ts_model_alt_port_{alt_num}_1W.jpg'
+                    risk_return_file_name = f'risk_return_alt_port_{alt_num + 1}_ts_1W.jpg'
                     model = pickle.load(open(base_path + file_name[:-4] + '.sav', 'rb'))
                     return_pct_ub = 100*(np.exp(model.get_forecast(steps = 52).summary_frame()).iloc[-1, 3] -1000) /1000
                     return_pct = 100*(np.exp(model.get_forecast(steps = 52).summary_frame()).iloc[-1, 0] -1000) /1000
@@ -63,6 +68,7 @@ def main():
             else:
                 if resamp_val == '1 Month':
                     file_name = f'pt_model_alt_port_{alt_num}_1M.jpg'
+                    risk_return_file_name = f'risk_return_alt_port_{alt_num + 1}_pt_1M.jpg'
                     model = pickle.load(open(base_path + file_name[:-4] + '.sav', 'rb'))
                     # prediction DF
                     future_dates = model.make_future_dataframe(periods = 12, freq = 'MS')
@@ -75,6 +81,7 @@ def main():
 
                 else:
                     file_name = f'pt_model_alt_port_{alt_num}_1W.jpg'
+                    risk_return_file_name = f'risk_return_alt_port_{alt_num + 1}_pt_1W.jpg'
                     model = pickle.load(open(base_path + file_name[:-4] + '.sav', 'rb'))  
                     # prediction DF
                     future_dates = model.make_future_dataframe(periods = 52, freq = 'W') 
@@ -85,24 +92,31 @@ def main():
                     return_pct = 100*(forecast.iloc[-1, -1] -1000)/1000
                     return_pct_lb = 100*(forecast.iloc[-1, 2] -1000)/1000
             disp_img(file_name)
+            st.write('''\n\nThe portfolio risk (volatility measured using beta) - return profile is shown as
+                        \n(the red circle pin points the currently chosen portfolio wrt others):\n''')
+            disp_img(risk_return_file_name)
+            st.markdown('''\n\nBest recommended portfolio across all modeling and resampling conditions: **Alternative portfolio 14**
+                        \nThis portfolio has the lowest volatility as measured by beta and still a very high return''')
 
         with col22:
             if mod_val == 'SARIMA':
-                st.write('Predicted 1 year highest expected % return :')
-                st.write(return_pct_ub)
+                st.write('Upper bound of the confidence interval of expected % return :')
+                st.write(float("{:.2f}".format(return_pct_ub)))
                 st.write('Predicted 1 year expected % return :')
-                st.write(return_pct)
-                st.write('Predicted 1 year lowest expected % return :')
-                st.write(return_pct_lb)
+                st.write(float("{:.2f}".format(return_pct)))
+                st.write('Lower bound of the confidence interval of expected % return :')
+                st.write(float("{:.2f}".format(return_pct_lb)))
+                st.write('\nSARIMA model summary:')
                 st.write(model.summary())
             else:
-                st.write('Predicted 1 year highest expected % return :')
-                st.write(return_pct_ub)
+                st.write('Upper bound of the confidence interval of expected % return :')
+                st.write(float("{:.2f}".format(return_pct_ub)))
                 st.write('Predicted 1 year expected % return :')
-                st.write(return_pct)
-                st.write('Predicted 1 year lowest expected % return :')
-                st.write(return_pct_lb)
-                st.write(model.plot_components(forecast))             
+                st.write(float("{:.2f}".format(return_pct)))
+                st.write('Lower bound of the confidence interval of expected % return :')
+                st.write(float("{:.2f}".format(return_pct_lb)))
+                st.write('\nPROPHET model components:')
+                st.write(model.plot_components(forecast))     # type: ignore        
 
 
 

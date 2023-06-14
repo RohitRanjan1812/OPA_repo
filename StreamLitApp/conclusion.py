@@ -15,3 +15,4 @@ def docu():
     st.write('3. We could enable a live training and prediction based upon user based selection of stocks rather than the 14 alternative portfolios offered currently.')
     st.write('4. Implementation of short-selling via -ve weights to allow for a even better risk-return management')
     st.write('5. Incorporation of predicted inflation impact based upon macroeconomic data to allow for a realistic judgement of predicted future return.')
+    st.write("6. Using Deep Learning methods on Time Series to perform better.")

@@ -49,6 +49,8 @@ def main():
                 st.experimental_set_query_params(button="qualitative")
             if button3_clicked:
                 st.experimental_set_query_params(button="time_series")
+            # else:
+            #     st.experimental_set_query_params(button="quantitative")
             # Get the state of the button from the query parameters
             button = st.experimental_get_query_params().get("button", None)
             if button is not None:

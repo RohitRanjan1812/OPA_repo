@@ -43,7 +43,9 @@ bounds = tuple((0, 1) for i in range(len(stocks)))
 constraints = ({'type': 'eq', 'fun': lambda x: np.sum(x) - 1})
 
 # Use the SciPy library to optimize the portfolio weights
-result = minimize(objective_function, len(stocks) * [1 / len(stocks)], args=(expected_returns, cov_matrix, risk_free_rate), bounds=bounds, constraints=constraints)
+result = minimize(objective_function, len(stocks) * [1 / len(stocks)],
+                args=(expected_returns, cov_matrix, risk_free_rate),
+                bounds=bounds, constraints=constraints)
 
 # Print the optimal portfolio weights
 print("Optimal weights:", result.x)
